@@ -42,7 +42,7 @@
 								<th>Value</th>
 							</tr>
 							<tr ng-repeat="record in records" ng-class="record.type === 1 ? 'success' : 'danger'">
-								<td>{{record.date}}</td>
+								<td>{{record.date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</td>
 								<td>{{record.value}}</td>
 							</tr>
 						</table>
@@ -53,8 +53,10 @@
 		</div>
 	</script>
 
+	<script src="/vendor/moment/moment.js"></script>
 	<script src="/vendor/lodash/lodash.js"></script>
 	<script src="/vendor/angular/angular.js"></script>
+	<script src="/vendor/angular-moment/angular-moment.js"></script>
 	<script src="/vendor/angular-route/angular-route.js"></script>
 	<script src="/js/app.js"></script>
 	<script src="/js/controllers/walletCtrl.js"></script>

@@ -81,7 +81,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope) {
 	function addRecord(type, value) {
 		$scope.records.push({
 			date: new Date(),
-			value: Number(value),
+			value: Number(parseFloat(value).toFixed(2)),
 			type: type
 		});
 	}

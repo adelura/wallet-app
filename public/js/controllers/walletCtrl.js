@@ -12,7 +12,9 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope) {
 	$scope.totalValue = 0;
 
 	$scope.addIncome = function () {
-		// @TODO: Validation.
+		if ($scope.income.errors.length) {
+			return;
+		}
 
 		addRecord($scope.TYPES.INCOME, $scope.income.value);
 		$scope.income.value = '';
@@ -20,12 +22,53 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope) {
 	};
 
 	$scope.addOutcome = function () {
-		// @TODO: Validation.
+		if ($scope.outcome.errors.length) {
+			return;
+		}
 
 		addRecord($scope.TYPES.OUTCOME, $scope.outcome.value);
 		$scope.outcome.value = '';
 		$scope.totalValue = calculateTotalValue();
 	};
+
+	$scope.$watch('income.value', function (newValue) {
+		if (!$scope.income) {
+			return;
+		}
+
+		$scope.income.errors = [];
+
+		if (newValue === '') {
+			return;
+		}
+
+		newValue = parseFloat(newValue).toFixed(2);
+		if (isNaN(newValue)) {
+			$scope.income.errors.push('Invalid value.');
+		}
+	});
+
+	$scope.$watch('outcome.value', function (newValue) {
+		if (!$scope.outcome) {
+			return;
+		}
+
+		$scope.outcome.errors = [];
+
+		if (newValue === '') {
+			return;
+		}
+
+		newValue = parseFloat(newValue).toFixed(2);
+		if (isNaN(newValue)) {
+			$scope.outcome.errors.push('Invalid value.');
+		}
+
+		console.log(calculateTotalValue() - newValue);
+		if (calculateTotalValue() - newValue < 0) {
+			$scope.outcome.errors.push('Total amount of wallet can\'t be less than zero.');
+		}
+	});
 
 	// Returns total wallet value.
 	function calculateTotalValue() {

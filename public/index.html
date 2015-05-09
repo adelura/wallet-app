@@ -12,11 +12,17 @@
 			<header id="header">
 				<h1>Wallet app</h1>
 
-				<form id="add-income-form" ng-submit="addIncome()">
+				<form name="addIncomeForm" id="add-income-form" ng-submit="addIncome()">
 					<label>Add income<input placeholder="Income value" ng-model="income.value" autofocus></label>
+					<ul class="errors" ng-show="income.errors.length">
+						<li ng-repeat="error in income.errors" >{{error}}</li>
+					</ul>
 				</form>
 				<form id="add-outcome-form" ng-submit="addOutcome()">
 					<label>Add outcome<input placeholder="Outcome value" ng-model="outcome.value" autofocus></label>
+					<ul class="errors" ng-show="outcome.errors.length">
+						<li ng-repeat="error in outcome.errors" >{{error}}</li>
+					</ul>
 				</form>
 			</header>
 			<section id="main" ng-show="records.length" ng-cloak>

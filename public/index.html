@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Wallet Application</title>
+</head>
+<body ng-app="wallet">
+	<ng-view />
+
+	<script type="text/ng-template" id="wallet-index.html">
+		<section id="walletapp">
+			<header id="header">
+				<h1>Wallet app</h1>
+			</header>
+			<section id="main" ng-show="records.length" ng-cloak>
+				<ul id="records-list">
+					<li ng-repeat="record in records">
+						<div class="view">
+							<label>{{record.date}}</label>
+							<label>{{record.value}}</label>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</section>
+	</script>
+
+	<script src="/vendor/angular/angular.js"></script>
+	<script src="/vendor/angular-route/angular-route.js"></script>
+	<script src="/js/app.js"></script>
+	<script src="/js/controllers/walletCtrl.js"></script>
+</body>
+</html>

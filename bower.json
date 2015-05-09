@@ -1,0 +1,11 @@
+{
+  "name": "boilerplate",
+  "version": "0.1.0",
+  "homepage": "https://github.com/adelura/boilerplate",
+  "authors": [
+    "Artur Delura <adelura@gmail.com>"
+  ],
+  "description": "Common setup for new projects",
+  "main": "app.js",
+  "license": "MIT"
+}

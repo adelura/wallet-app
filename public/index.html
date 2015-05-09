@@ -11,6 +11,13 @@
 		<section id="walletapp">
 			<header id="header">
 				<h1>Wallet app</h1>
+
+				<form id="add-income-form" ng-submit="addIncome()">
+					<label>Add income<input placeholder="Income value" ng-model="income.value" autofocus></label>
+				</form>
+				<form id="add-outcome-form" ng-submit="addOutcome()">
+					<label>Add outcome<input placeholder="Outcome value" ng-model="outcome.value" autofocus></label>
+				</form>
 			</header>
 			<section id="main" ng-show="records.length" ng-cloak>
 				<ul id="records-list">

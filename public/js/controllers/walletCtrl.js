@@ -64,7 +64,6 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope) {
 			$scope.outcome.errors.push('Invalid value.');
 		}
 
-		console.log(calculateTotalValue() - newValue);
 		if (calculateTotalValue() - newValue < 0) {
 			$scope.outcome.errors.push('Total amount of wallet can\'t be less than zero.');
 		}

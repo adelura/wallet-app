@@ -3,40 +3,54 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>Wallet Application</title>
+	<link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="styles/style.css" />
 </head>
 <body ng-app="wallet">
 	<ng-view />
 
 	<script type="text/ng-template" id="wallet-index.html">
-		<section id="walletapp">
-			<header id="header">
-				<h1>Wallet app</h1>
+		<div id="walletapp" class="row center-block">
+			<div class="col-md-12">
+				<section>
+					<header id="header">
+						<h2>Wallet Application</h2>
 
-				<form name="addIncomeForm" id="add-income-form" ng-submit="addIncome()">
-					<label>Add income<input placeholder="Income value" ng-model="income.value" autofocus></label>
-					<ul class="errors" ng-show="income.errors.length">
-						<li ng-repeat="error in income.errors" >{{error}}</li>
-					</ul>
-				</form>
-				<form id="add-outcome-form" ng-submit="addOutcome()">
-					<label>Add outcome<input placeholder="Outcome value" ng-model="outcome.value" autofocus></label>
-					<ul class="errors" ng-show="outcome.errors.length">
-						<li ng-repeat="error in outcome.errors" >{{error}}</li>
-					</ul>
-				</form>
-			</header>
-			<section id="main" ng-show="records.length" ng-cloak>
-				<ul id="records-list">
-					<li ng-repeat="record in records">
-						<div class="view">
-							<label>{{record.date}}</label>
-							<label>{{record.value}}</label>
-						</div>
-					</li>
-				</ul>
-				<div>Total amount: <strong>{{totalValue}}</strong></div>
-			</section>
-		</section>
+						<form name="addIncomeForm" id="add-income-form" ng-submit="addIncome()" ng-class="{ 'has-error' : income.errors.length}">
+							<div class="form-group">
+								<label>Add income</label>
+								<input class="form-control input-sm" placeholder="Income value" ng-model="income.value" autofocus>
+								<ul class="list-unstyled" ng-show="income.errors.length">
+									<li class="help-block" ng-repeat="error in income.errors" >{{error}}</li>
+								</ul>
+							</div>
+						</form>
+						<form id="add-outcome-form" ng-submit="addOutcome()" ng-class="{ 'has-error' : outcome.errors.length}">
+							<div class="form-group">
+								<label>Add outcome</label>
+								<input class="form-control input-sm" placeholder="Outcome value" ng-model="outcome.value" autofocus>
+								<ul class="list-unstyled" ng-show="outcome.errors.length">
+									<li class="help-block" ng-repeat="error in outcome.errors" >{{error}}</li>
+								</ul>
+							</div>
+						</form>
+					</header>
+					<section id="main" ng-cloak>
+						<table class="table" id="records-list" ng-show="records.length">
+							<tr>
+								<th>Added/Removed date</th>
+								<th>Value</th>
+							</tr>
+							<tr ng-repeat="record in records" ng-class="record.type === 1 ? 'success' : 'danger'">
+								<td>{{record.date}}</td>
+								<td>{{record.value}}</td>
+							</tr>
+						</table>
+						<div>Total amount: <strong>{{totalValue}}</strong></div>
+					</section>
+				</section>
+			</div>
+		</div>
 	</script>
 
 	<script src="/vendor/lodash/lodash.js"></script>

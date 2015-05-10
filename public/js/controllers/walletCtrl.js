@@ -5,6 +5,9 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 
 	$scope.currencies = currencies;
 
+	$scope.outcome = {};
+	$scope.income = {};
+
 	// This function is required to properly escape currency characters in the template.
 	$scope.escapedCurrency = function () {
 		return $sce.trustAsHtml($scope.currency.entity);
@@ -14,6 +17,8 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	$scope.records = storage.get('records') || [];
 
 	$scope.addIncome = function () {
+		debugger;
+		$scope.income.errors = validateIncome($scope.income ? $scope.income.value : '');
 		if ($scope.income.errors.length) {
 			return;
 		}
@@ -23,6 +28,9 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	};
 
 	$scope.addOutcome = function () {
+		debugger;
+		$scope.outcome.errors = validateOutcome($scope.outcome ? $scope.outcome.value : '', $scope.totalValue);
+
 		if ($scope.outcome.errors.length) {
 			return;
 		}
@@ -56,42 +64,56 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	});
 
 	$scope.$watch('income.value', function (newValue) {
-		if (!$scope.income) {
+		if (!$scope.income || !newValue) {
 			return;
 		}
 
-		$scope.income.errors = [];
-
-		if (newValue === '') {
-			return;
-		}
-
-		newValue = parseFloat(newValue).toFixed(2);
-		if (isNaN(newValue)) {
-			$scope.income.errors.push('Invalid value.');
-		}
+		$scope.income.errors = validateIncome( newValue );
 	});
 
 	$scope.$watch('outcome.value', function (newValue) {
-		if (!$scope.outcome) {
+		if (!$scope.outcome || !newValue) {
 			return;
 		}
 
-		$scope.outcome.errors = [];
-
-		if (newValue === '') {
-			return;
-		}
-
-		newValue = parseFloat(newValue).toFixed(2);
-		if (isNaN(newValue)) {
-			$scope.outcome.errors.push('Invalid value.');
-		}
-
-		if ($scope.totalValue - newValue < 0) {
-			$scope.outcome.errors.push('Total amount of wallet can\'t be less than zero.');
-		}
+		$scope.outcome.errors = validateOutcome(newValue, $scope.totalValue);
 	});
+
+	function validateIncome(value) {
+		var errors = [];
+
+		if (!value) {
+			errors.push('Value can\'t be empty.');
+			return errors;
+		}
+
+		value = parseFloat(value).toFixed(2);
+		if (isNaN(value)) {
+			errors.push('Invalid value.');
+		}
+
+		return errors;
+	}
+
+	function validateOutcome(value, totalValue) {
+		var errors = [];
+
+		if (!value) {
+			errors.push('Value can\'t be empty.');
+			return errors;
+		}
+
+		value = parseFloat(value).toFixed(2);
+		if (isNaN(value)) {
+			errors.push('Invalid value.');
+		}
+
+		if (totalValue - value < 0) {
+			errors.push('Total amount of wallet can\'t be less than zero.');
+		}
+
+		return errors;
+	}
 
 	// Returns total wallet value.
 	function calculateTotalValue() {

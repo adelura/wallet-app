@@ -5,6 +5,7 @@
 	<title>Wallet Application</title>
 	<link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" href="styles/style.css" />
+	<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.css" />
 </head>
 <body ng-app="wallet">
 	<ng-view />
@@ -14,7 +15,17 @@
 			<div class="col-md-12">
 				<section>
 					<header id="header">
-						<h2>Wallet Application</h2>
+						<div class="row">
+							<div class="col-md-6">
+								<h2>Wallet Application</h2>
+							</div>
+							<div class="col-md-6">
+								Choose your currency:
+								<button type="button" class="btn btn-primary" ng-repeat="currency in currencies" ng-click="changeCurrency(currency)">
+									<i class="fa {{currency.class}} fa-2x"></i>
+								</button>
+							</div>
+						</div>
 
 						<form name="addIncomeForm" id="add-income-form" ng-submit="addIncome()" ng-class="{ 'has-error' : income.errors.length}">
 							<div class="form-group">
@@ -43,10 +54,10 @@
 							</tr>
 							<tr ng-repeat="record in records" ng-class="record.type === 1 ? 'success' : 'danger'">
 								<td>{{record.date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</td>
-								<td>{{record.value}}</td>
+								<td>{{record.value}} {{currency.entity}}</td>
 							</tr>
 						</table>
-						<div>Total amount: <strong>{{totalValue}}</strong></div>
+						<div>Total amount: <strong>{{totalValue}} <i class="fa {{currency.class}}"></i></strong></div>
 					</section>
 				</section>
 			</div>

@@ -1,6 +1,10 @@
 /*global angular */
 
-angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope) {
+angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, currencies) {
+	$scope.currency = currencies[0];
+
+	$scope.currencies = currencies;
+
 	$scope.TYPES = {
 		INCOME: 1,
 		OUTCOME: 2
@@ -29,6 +33,18 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope) {
 		addRecord($scope.TYPES.OUTCOME, $scope.outcome.value);
 		$scope.outcome.value = '';
 		$scope.totalValue = calculateTotalValue();
+	};
+
+	$scope.changeCurrency = function (_currency) {
+		var foundIndex = _.findIndex($scope.currencies, function (currency) {
+			return currency.name === _currency.name;
+		});
+
+		if (foundIndex === -1) {
+			throw new Error('Index not found');
+		}
+
+		$scope.currency = $scope.currencies[foundIndex];
 	};
 
 	$scope.$watch('income.value', function (newValue) {

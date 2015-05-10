@@ -9,4 +9,9 @@ angular.module('wallet', ['ngRoute', 'angularMoment']).config(function ($routePr
 		.otherwise({
 			redirectTo: '/'
 		});
-});
+})
+.constant('currencies', [
+	{ name: 'Dollar', class: 'fa-usd', entity: '&#36;' },
+	{ name: 'Euro', class: 'fa-eur', entity: '&euro;' },
+	{ name: 'Pound', class: 'fa-gbp', entity: '&pound;' }
+]);

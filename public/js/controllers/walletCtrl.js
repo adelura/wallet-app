@@ -1,11 +1,6 @@
 /*global angular */
 
-angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies, storage) {
-	$scope.TYPES = {
-		INCOME: 1,
-		OUTCOME: 2
-	};
-
+angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies, storage, TYPES) {
 	$scope.currency = storage.get('currency') || currencies[0];
 
 	$scope.currencies = currencies;
@@ -18,14 +13,12 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	// Temporary model.
 	$scope.records = storage.get('records') || [];
 
-	$scope.totalValue = 0;
-
 	$scope.addIncome = function () {
 		if ($scope.income.errors.length) {
 			return;
 		}
 
-		addRecord($scope.TYPES.INCOME, $scope.income.value);
+		addRecord(TYPES.INCOME, $scope.income.value);
 		$scope.income.value = '';
 	};
 
@@ -34,7 +27,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 			return;
 		}
 
-		addRecord($scope.TYPES.OUTCOME, $scope.outcome.value);
+		addRecord(TYPES.OUTCOME, $scope.outcome.value);
 		$scope.outcome.value = '';
 	};
 
@@ -103,7 +96,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	// Returns total wallet value.
 	function calculateTotalValue() {
 		return _.reduce($scope.records, function (memo, record) {
-			return memo + (record.type === $scope.TYPES.INCOME ? record.value : (record.value * -1));
+			return memo + (record.type === TYPES.INCOME ? record.value : (record.value * -1));
 		}, 0);
 	}
 

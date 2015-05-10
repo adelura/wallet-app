@@ -1,22 +1,22 @@
 /*global angular */
 
-angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies) {
+angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies, storage) {
 	$scope.TYPES = {
 		INCOME: 1,
 		OUTCOME: 2
 	};
 
-	$scope.currency = currencies[0];
+	$scope.currency = storage.get('currency') || currencies[0];
 
 	$scope.currencies = currencies;
 
 	// This function is required to properly escape currency characters in the template.
-	$scope.escapedCurrency = function() {
+	$scope.escapedCurrency = function () {
 		return $sce.trustAsHtml($scope.currency.entity);
 	};
 
 	// Temporary model.
-	$scope.records = [];
+	$scope.records = storage.get('records') || [];
 
 	$scope.totalValue = 0;
 
@@ -27,7 +27,6 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 
 		addRecord($scope.TYPES.INCOME, $scope.income.value);
 		$scope.income.value = '';
-		$scope.totalValue = calculateTotalValue();
 	};
 
 	$scope.addOutcome = function () {
@@ -37,7 +36,6 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 
 		addRecord($scope.TYPES.OUTCOME, $scope.outcome.value);
 		$scope.outcome.value = '';
-		$scope.totalValue = calculateTotalValue();
 	};
 
 	$scope.changeCurrency = function (_currency) {
@@ -50,7 +48,12 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 		}
 
 		$scope.currency = $scope.currencies[foundIndex];
+		storage.set('currency', $scope.currency);
 	};
+
+	$scope.$watch('records.length', function () {
+		$scope.totalValue = calculateTotalValue();
+	});
 
 	$scope.$watch('income.value', function (newValue) {
 		if (!$scope.income) {
@@ -85,7 +88,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 			$scope.outcome.errors.push('Invalid value.');
 		}
 
-		if (calculateTotalValue() - newValue < 0) {
+		if ($scope.totalValue - newValue < 0) {
 			$scope.outcome.errors.push('Total amount of wallet can\'t be less than zero.');
 		}
 	});
@@ -104,5 +107,10 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 			value: Number(parseFloat(value).toFixed(2)),
 			type: type
 		});
+
+		// Filtered out records.
+		storage.set('records', _.map($scope.records, function (record) {
+			return _.pick(record, 'date', 'value', 'type');
+		}));
 	}
 });

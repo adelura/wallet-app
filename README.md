@@ -1,5 +1,5 @@
 # wallet-app
-Simple wallet app, to manage your spendings.
+Simple wallet app, to manage your spendings. Application is available online under [http://128.199.61.161:1337](http://128.199.61.161:1337).
 
 ### Setup
 Run `npm install` to install all dependencies.

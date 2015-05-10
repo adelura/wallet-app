@@ -1,13 +1,18 @@
 /*global angular */
 
-angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, currencies) {
+angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies) {
+	$scope.TYPES = {
+		INCOME: 1,
+		OUTCOME: 2
+	};
+
 	$scope.currency = currencies[0];
 
 	$scope.currencies = currencies;
 
-	$scope.TYPES = {
-		INCOME: 1,
-		OUTCOME: 2
+	// This function is required to properly escape currency characters in the template.
+	$scope.escapedCurrency = function() {
+		return $sce.trustAsHtml($scope.currency.entity);
 	};
 
 	// Temporary model.

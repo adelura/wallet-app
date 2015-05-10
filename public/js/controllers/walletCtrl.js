@@ -51,6 +51,13 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 		storage.set('currency', $scope.currency);
 	};
 
+	$scope.reset = function() {
+		$scope.currency = currencies[0];
+		$scope.records = [];
+		storage.set('currency', $scope.currency);
+		storage.set('records', $scope.records);
+	};
+
 	$scope.$watch('records.length', function () {
 		$scope.totalValue = calculateTotalValue();
 	});

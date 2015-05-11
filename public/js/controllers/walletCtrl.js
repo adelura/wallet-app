@@ -116,6 +116,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	// Returns total wallet value.
 	function calculateTotalValue() {
 		return _.reduce($scope.records, function (memo, record) {
+			// Income increase and outcome decrease the total value.
 			return memo + (record.type === TYPES.INCOME ? record.value : (record.value * -1));
 		}, 0);
 	}

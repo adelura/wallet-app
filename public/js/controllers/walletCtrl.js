@@ -52,7 +52,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 		storage.set('currency', $scope.currency);
 	};
 
-	$scope.reset = function() {
+	$scope.reset = function () {
 		$scope.currency = currencies[0];
 		$scope.records = [];
 		storage.set('currency', $scope.currency);
@@ -68,7 +68,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 			return;
 		}
 
-		$scope.income.errors = validateIncome( newValue );
+		$scope.income.errors = validateIncome(newValue);
 	});
 
 	$scope.$watch('outcome.value', function (newValue) {

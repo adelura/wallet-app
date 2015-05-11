@@ -6,7 +6,7 @@ angular.module('wallet').controller('MainMenuController', function MainMenuContr
 		$scope.active = !$scope.active;
 	}
 
-	$scope.reset = function() {
+	$scope.reset = function () {
 		$scope.$parent.reset();
 	};
 });

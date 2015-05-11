@@ -5,6 +5,8 @@ module.exports = function (grunt) {
 
 		jscs: {
 			src: [
+				'tests/*.js',
+				'tests/**/*.js',
 				'public/js/*/*.js',
 				'public/js/**/*.js'
 			],

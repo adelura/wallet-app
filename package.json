@@ -4,7 +4,7 @@
   "description": "Simple wallet application.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "karma run",
     "start": "node node_modules/http-server/bin/http-server"
   },
   "repository": {
@@ -19,6 +19,9 @@
   "homepage": "https://github.com/adelura/wallet-app",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-jscs": "^1.8.0"
+    "grunt-jscs": "^1.8.0",
+    "karma-chai-sinon": "^0.1.4",
+    "karma-chrome-launcher": "^0.1.10",
+    "karma-mocha": "^0.1.10"
   }
 }

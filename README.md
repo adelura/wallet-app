@@ -9,3 +9,6 @@ Run `npm install & bower install` to install all dependencies.
 
 ### Run
 Run `np init` to start the HTTP server. Then navigate to [http://127.0.0.1:8080](http://127.0.0.1:8080).
+
+### Tests
+To run tests you must start karma server by calling `karma start` and then run test by calling `karma run`.

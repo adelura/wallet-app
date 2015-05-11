@@ -17,7 +17,6 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	$scope.records = storage.get('records') || [];
 
 	$scope.addIncome = function () {
-		debugger;
 		$scope.income.errors = validateIncome($scope.income ? $scope.income.value : '');
 		if ($scope.income.errors.length) {
 			return;
@@ -28,7 +27,6 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	};
 
 	$scope.addOutcome = function () {
-		debugger;
 		$scope.outcome.errors = validateOutcome($scope.outcome ? $scope.outcome.value : '', $scope.totalValue);
 
 		if ($scope.outcome.errors.length) {

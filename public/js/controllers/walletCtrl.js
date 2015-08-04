@@ -1,44 +1,45 @@
 /*global angular */
 
 angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies, storage, TYPES) {
-	$scope.currency = storage.get('currency') || currencies[0];
+	var that = this;
+	this.currency = storage.get('currency') || currencies[0];
 
-	$scope.currencies = currencies;
+	this.currencies = currencies;
 
-	$scope.outcome = {};
-	$scope.income = {};
+	this.outcome = {};
+	this.income = {};
 
 	// This function is required to properly escape currency characters in the template.
-	$scope.escapedCurrency = function () {
-		return $sce.trustAsHtml($scope.currency.entity);
+	this.escapedCurrency = function () {
+		return $sce.trustAsHtml(this.currency.entity);
 	};
 
 	// Temporary model.
-	$scope.records = storage.get('records') || [];
+	this.records = storage.get('records') || [];
 
-	$scope.addIncome = function () {
-		$scope.income.errors = validateIncome($scope.income ? $scope.income.value : '');
-		if ($scope.income.errors.length) {
+	this.addIncome = function () {
+		this.income.errors = validateIncome(this.income ? this.income.value : '');
+		if (this.income.errors.length) {
 			return;
 		}
 
-		addRecord(TYPES.INCOME, $scope.income.value);
-		$scope.income.value = '';
+		addRecord(this.records, TYPES.INCOME, this.income.value);
+		this.income.value = '';
 	};
 
-	$scope.addOutcome = function () {
-		$scope.outcome.errors = validateOutcome($scope.outcome ? $scope.outcome.value : '', $scope.totalValue);
+	this.addOutcome = function () {
+		this.outcome.errors = validateOutcome(this.outcome ? this.outcome.value : '', this.totalValue);
 
-		if ($scope.outcome.errors.length) {
+		if (this.outcome.errors.length) {
 			return;
 		}
 
-		addRecord(TYPES.OUTCOME, $scope.outcome.value);
-		$scope.outcome.value = '';
+		addRecord(this.records, TYPES.OUTCOME, this.outcome.value);
+		this.outcome.value = '';
 	};
 
-	$scope.changeCurrency = function (_currency) {
-		var foundIndex = _.findIndex($scope.currencies, function (currency) {
+	this.changeCurrency = function (_currency) {
+		var foundIndex = _.findIndex(this.currencies, function (currency) {
 			return currency.name === _currency.name;
 		});
 
@@ -46,35 +47,41 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 			throw new Error('Index not found');
 		}
 
-		$scope.currency = $scope.currencies[foundIndex];
-		storage.set('currency', $scope.currency);
+		this.currency = this.currencies[foundIndex];
+		storage.set('currency', this.currency);
 	};
 
-	$scope.reset = function () {
-		$scope.currency = currencies[0];
-		$scope.records = [];
-		storage.set('currency', $scope.currency);
-		storage.set('records', $scope.records);
+	this.reset = function () {
+		this.currency = currencies[0];
+		this.records = [];
+		storage.set('currency', this.currency);
+		storage.set('records', this.records);
 	};
 
-	$scope.$watch('records.length', function () {
-		$scope.totalValue = calculateTotalValue();
+	$scope.$watch(function () {
+		return that.records.length;
+	}, function () {
+		that.totalValue = calculateTotalValue(that.records);
 	});
 
-	$scope.$watch('income.value', function (newValue) {
-		if (!$scope.income || !newValue) {
+	$scope.$watch(function () {
+		return that.income.value;
+	}, function (newValue) {
+		if (!that.income || !newValue) {
 			return;
 		}
 
-		$scope.income.errors = validateIncome(newValue);
+		that.income.errors = validateIncome(newValue);
 	});
 
-	$scope.$watch('outcome.value', function (newValue) {
-		if (!$scope.outcome || !newValue) {
+	$scope.$watch(function() {
+		return that.outcome.value;
+	}, function (newValue) {
+		if (!that.outcome || !newValue) {
 			return;
 		}
 
-		$scope.outcome.errors = validateOutcome(newValue, $scope.totalValue);
+		that.outcome.errors = validateOutcome(newValue, that.totalValue);
 	});
 
 	function validateIncome(value) {
@@ -114,23 +121,23 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 	}
 
 	// Returns total wallet value.
-	function calculateTotalValue() {
-		return _.reduce($scope.records, function (memo, record) {
+	function calculateTotalValue(records) {
+		return _.reduce(records, function (memo, record) {
 			// Income increase and outcome decrease the total value.
 			return memo + (record.type === TYPES.INCOME ? record.value : (record.value * -1));
 		}, 0);
 	}
 
 	// Add record to storage.
-	function addRecord(type, value) {
-		$scope.records.push({
+	function addRecord(records, type, value) {
+		records.push({
 			date: new Date(),
 			value: Number(parseFloat(value).toFixed(2)),
 			type: type
 		});
 
 		// Filtered out records.
-		storage.set('records', _.map($scope.records, function (record) {
+		storage.set('records', _.map(records, function (record) {
 			return _.pick(record, 'date', 'value', 'type');
 		}));
 	}

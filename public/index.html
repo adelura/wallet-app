@@ -14,7 +14,7 @@
 	<script type="text/ng-template" id="wallet-index.html">
 		<div id="walletapp" class="row center-block">
 			<div>
-				<wallet-main-menu wallet-reset="reset()"></wallet-main-menu>
+				<wallet-main-menu wallet-reset="vm.reset()"></wallet-main-menu>
 			</div>
 
 			<div class="col-md-12">
@@ -26,7 +26,7 @@
 							</div>
 							<div class="col-md-6">
 								Choose your currency:
-								<button type="button" class="btn btn-primary" ng-repeat="currency in currencies" ng-click="changeCurrency(currency)">
+								<button type="button" class="btn btn-primary" ng-repeat="currency in vm.currencies" ng-click="vm.changeCurrency(currency)">
 									<i class="fa {{currency.class}} fa-2x"></i>
 								</button>
 							</div>
@@ -37,32 +37,32 @@
 							wallet-title="Add income"
 							wallet-placeholder="Income value"
 							wallet-name="addIncomeForm"
-							wallet-submit="addIncome()"
-							wallet-errors="income.errors"
-							wallet-input-model="income.value"
+							wallet-submit="vm.addIncome()"
+							wallet-errors="vm.income.errors"
+							wallet-input-model="vm.income.value"
 						></wallet-record-form>
 
 						<wallet-record-form
 							wallet-title="Add outcome"
 							wallet-placeholder="Outcome value"
 							wallet-name="addOutcomeForm"
-							wallet-submit="addOutcome()"
-							wallet-errors="outcome.errors"
-							wallet-input-model="outcome.value"
+							wallet-submit="vm.addOutcome()"
+							wallet-errors="vm.outcome.errors"
+							wallet-input-model="vm.outcome.value"
 						></wallet-record-form>
 					</header>
 					<section id="main" ng-cloak>
-						<table class="table" id="records-list" ng-show="records.length">
+						<table class="table" id="records-list" ng-show="vm.records.length">
 							<tr>
 								<th>Added/Removed date</th>
 								<th>Value</th>
 							</tr>
-							<tr ng-repeat="record in records" ng-class="record.type === 1 ? 'success' : 'danger'">
+							<tr ng-repeat="record in vm.records" ng-class="record.type === 1 ? 'success' : 'danger'">
 								<td>{{record.date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</td>
-								<td>{{record.value}} <span ng-bind-html="escapedCurrency()"></span></td>
+								<td>{{record.value}} <span ng-bind-html="vm.escapedCurrency()"></span></td>
 							</tr>
 						</table>
-						<div>Total amount: <strong>{{totalValue}} <i class="fa {{currency.class}}"></i></strong></div>
+						<div>Total amount: <strong>{{vm.totalValue}} <i class="fa {{vm.currency.class}}"></i></strong></div>
 					</section>
 				</section>
 			</div>

@@ -5,8 +5,4 @@ angular.module('wallet').controller('MainMenuController', function MainMenuContr
 	$scope.toggleMenu = function () {
 		$scope.active = !$scope.active;
 	}
-
-	$scope.reset = function () {
-		$scope.$parent.reset();
-	};
 });

@@ -32,24 +32,24 @@
 							</div>
 						</div>
 
-						<form name="addIncomeForm" id="add-income-form" ng-submit="addIncome()" ng-class="{ 'has-error' : income.errors.length}">
-							<div class="form-group">
-								<label>Add income</label>
-								<input class="form-control input-sm" placeholder="Income value" ng-model="income.value" autofocus>
-								<ul class="list-unstyled" ng-show="income.errors.length">
-									<li class="help-block" ng-repeat="error in income.errors" >{{error}}</li>
-								</ul>
-							</div>
-						</form>
-						<form id="add-outcome-form" ng-submit="addOutcome()" ng-class="{ 'has-error' : outcome.errors.length}">
-							<div class="form-group">
-								<label>Add outcome</label>
-								<input class="form-control input-sm" placeholder="Outcome value" ng-model="outcome.value" autofocus>
-								<ul class="list-unstyled" ng-show="outcome.errors.length">
-									<li class="help-block" ng-repeat="error in outcome.errors" >{{error}}</li>
-								</ul>
-							</div>
-						</form>
+						<wallet-record-form
+							wallet-autofocus
+							wallet-title="Add income"
+							wallet-placeholder="Income value"
+							wallet-name="addIncomeForm"
+							wallet-submit="addIncome()"
+							wallet-errors="income.errors"
+							wallet-input-model="income.value"
+						></wallet-record-form>
+
+						<wallet-record-form
+							wallet-title="Add outcome"
+							wallet-placeholder="Outcome value"
+							wallet-name="addOutcomeForm"
+							wallet-submit="addOutcome()"
+							wallet-errors="outcome.errors"
+							wallet-input-model="outcome.value"
+						></wallet-record-form>
 					</header>
 					<section id="main" ng-cloak>
 						<table class="table" id="records-list" ng-show="records.length">
@@ -80,5 +80,6 @@
 	<script src="/js/controllers/walletCtrl.js"></script>
 	<script src="/js/directives/mainMenu/mainMenuCtrl.js"></script>
 	<script src="/js/directives/mainMenu/mainMenu.js"></script>
+	<script src="/js/directives/recordForm/recordForm.js"></script>
 </body>
 </html>

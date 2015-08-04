@@ -1,0 +1,12 @@
+<form name="{{walletName}}" ng-submit="walletSubmit()" ng-class="{ 'has-error' : walletErrors().length}">
+	<div class="form-group">
+		<label>{{walletTitle}}</label>
+		<input class="form-control input-sm"
+			ng-autofocus=""
+			placeholder="{{walletPlaceholder}}"
+			ng-model="walletInputModel">
+		<ul class="list-unstyled" ng-show="walletErrors().length">
+			<li class="help-block" ng-repeat="error in walletErrors()" >{{error}}</li>
+		</ul>
+	</div>
+</form>

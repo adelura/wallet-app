@@ -12,59 +12,62 @@
 	<ng-view />
 
 	<script type="text/ng-template" id="wallet-index.html">
-		<div id="walletapp" class="row center-block">
-			<div>
-				<wallet-main-menu wallet-reset="vm.reset()"></wallet-main-menu>
-			</div>
+		<div>
+			<div class="loader" ng-show="vm.isLoading">Loading...</div>
+			<div id="walletapp" class="row center-block" ng-hide="vm.isLoading">
+				<div>
+					<wallet-main-menu wallet-reset="vm.reset()"></wallet-main-menu>
+				</div>
 
-			<div class="col-md-12">
-				<section>
-					<header id="header">
-						<div class="row">
-							<div class="col-md-6">
-								<h2>Wallet Application</h2>
+				<div class="col-md-12">
+					<section>
+						<header id="header">
+							<div class="row">
+								<div class="col-md-6">
+									<h2>Wallet Application</h2>
+								</div>
+								<div class="col-md-6">
+									Choose your currency:
+									<button type="button" class="btn btn-primary" ng-repeat="currency in vm.currencies" ng-click="vm.changeCurrency(currency)">
+										<i class="fa {{currency.class}} fa-2x"></i>
+									</button>
+								</div>
 							</div>
-							<div class="col-md-6">
-								Choose your currency:
-								<button type="button" class="btn btn-primary" ng-repeat="currency in vm.currencies" ng-click="vm.changeCurrency(currency)">
-									<i class="fa {{currency.class}} fa-2x"></i>
-								</button>
-							</div>
-						</div>
 
-						<wallet-record-form
-							wallet-autofocus
-							wallet-title="Add income"
-							wallet-placeholder="Income value"
-							wallet-name="addIncomeForm"
-							wallet-submit="vm.addIncome()"
-							wallet-errors="vm.income.errors"
-							wallet-input-model="vm.income.value"
-						></wallet-record-form>
+							<wallet-record-form
+								wallet-autofocus
+								wallet-title="Add income"
+								wallet-placeholder="Income value"
+								wallet-name="addIncomeForm"
+								wallet-submit="vm.addIncome()"
+								wallet-errors="vm.income.errors"
+								wallet-input-model="vm.income.value"
+							></wallet-record-form>
 
-						<wallet-record-form
-							wallet-title="Add outcome"
-							wallet-placeholder="Outcome value"
-							wallet-name="addOutcomeForm"
-							wallet-submit="vm.addOutcome()"
-							wallet-errors="vm.outcome.errors"
-							wallet-input-model="vm.outcome.value"
-						></wallet-record-form>
-					</header>
-					<section id="main" ng-cloak>
-						<table class="table" id="records-list" ng-show="vm.records.length">
-							<tr>
-								<th>Added/Removed date</th>
-								<th>Value</th>
-							</tr>
-							<tr ng-repeat="record in vm.records" ng-class="record.type === 1 ? 'success' : 'danger'">
-								<td>{{record.date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</td>
-								<td>{{record.value}} <span ng-bind-html="vm.escapedCurrency()"></span></td>
-							</tr>
-						</table>
-						<div>Total amount: <strong>{{vm.totalValue}} <i class="fa {{vm.currency.class}}"></i></strong></div>
+							<wallet-record-form
+								wallet-title="Add outcome"
+								wallet-placeholder="Outcome value"
+								wallet-name="addOutcomeForm"
+								wallet-submit="vm.addOutcome()"
+								wallet-errors="vm.outcome.errors"
+								wallet-input-model="vm.outcome.value"
+							></wallet-record-form>
+						</header>
+						<section id="main" ng-cloak>
+							<table class="table" id="records-list" ng-show="vm.records.length">
+								<tr>
+									<th>Added/Removed date</th>
+									<th>Value</th>
+								</tr>
+								<tr ng-repeat="record in vm.records" ng-class="record.type === 1 ? 'success' : 'danger'">
+									<td>{{record.date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</td>
+									<td>{{record.value}} <span ng-bind-html="vm.escapedCurrency()"></span></td>
+								</tr>
+							</table>
+							<div>Total amount: <strong>{{vm.totalValue}} <i class="fa {{vm.currency.class}}"></i></strong></div>
+						</section>
 					</section>
-				</section>
+				</div>
 			</div>
 		</div>
 	</script>

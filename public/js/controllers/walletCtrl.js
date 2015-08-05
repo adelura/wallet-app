@@ -1,21 +1,38 @@
 /*global angular */
 
-angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies, storage, TYPES) {
+angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $sce, currencies, walletStorage, TYPES, $q) {
 	var that = this;
-	this.currency = storage.get('currency') || currencies[0];
+
+	this.currency = currencies[0];
+	this.records = [];
+
+	this.isLoading = true;
 
 	this.currencies = currencies;
 
 	this.outcome = {};
 	this.income = {};
 
+	activate();
+
+	function activate() {
+		that.isLoading = true;
+
+		$q.all({
+			currency: walletStorage.get('currency'),
+			records: walletStorage.get('records')
+		}).then(function (result) {
+			that.currency = result.currency || that.currency;
+			that.records = result.records || that.records;
+			that.isLoading = false;
+		});
+	}
+
 	// This function is required to properly escape currency characters in the template.
 	this.escapedCurrency = function () {
 		return $sce.trustAsHtml(this.currency.entity);
 	};
 
-	// Temporary model.
-	this.records = storage.get('records') || [];
 
 	this.addIncome = function () {
 		this.income.errors = validateIncome(this.income ? this.income.value : '');
@@ -48,14 +65,14 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 		}
 
 		this.currency = this.currencies[foundIndex];
-		storage.set('currency', this.currency);
+		walletStorage.set('currency', this.currency);
 	};
 
 	this.reset = function () {
 		this.currency = currencies[0];
 		this.records = [];
-		storage.set('currency', this.currency);
-		storage.set('records', this.records);
+		walletStorage.set('currency', this.currency);
+		walletStorage.set('records', this.records);
 	};
 
 	$scope.$watch(function () {
@@ -137,7 +154,7 @@ angular.module('wallet').controller('WalletCtrl', function WalletCtrl($scope, $s
 		});
 
 		// Filtered out records.
-		storage.set('records', _.map(records, function (record) {
+		walletStorage.set('records', _.map(records, function (record) {
 			return _.pick(record, 'date', 'value', 'type');
 		}));
 	}

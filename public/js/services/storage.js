@@ -7,12 +7,21 @@
  * They both follow the same API, returning promises for all changes to the
  * model.
  */
-angular.module('wallet').factory('storage', function () {
+angular.module('wallet').factory('walletStorage', function ($timeout, $q) {
 	var STORAGE_ID = 'wallet';
 
 	return {
 		get: function (key) {
-			return JSON.parse(localStorage.getItem(STORAGE_ID + key));
+			var deferred, result;
+
+			deferred = $q.defer();
+			result = JSON.parse(localStorage.getItem(STORAGE_ID + key));
+
+			$timeout(function() {
+				deferred.resolve(result);
+			}, 3 * 1000);
+
+			return deferred.promise;
 		},
 
 		set: function (key, value) {

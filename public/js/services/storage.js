@@ -17,9 +17,7 @@ angular.module('wallet').factory('walletStorage', function ($timeout, $q) {
 			deferred = $q.defer();
 			result = JSON.parse(localStorage.getItem(STORAGE_ID + key));
 
-			$timeout(function() {
-				deferred.resolve(result);
-			}, 3 * 1000);
+			deferred.resolve(result);
 
 			return deferred.promise;
 		},

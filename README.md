@@ -20,7 +20,7 @@ Simple wallet application which allows you to add and remove amounts to and from
 
 #### Specifications
 1. User can choose the currency of the wallet. This should be displayed next to each item and the grand total.
-2. For the currency symbol next the grand total you should use a [font awesome](http://fortawesome.github.io/FontAwesome/) icon and for the items in the wallet it should be text.
+2. For the currency symbol next the grand total you should use a [Font Awesome](http://fortawesome.github.io/Font-Awesome/) icon and for the items in the wallet it should be text.
 3. The input(s) to add/remove amounts should have error checking and reporting.
 4. The wallet data should persist on a page refresh for the same user until they click "Reset" in the menu. It is up to the developer to choose persistence method.
 6. The menu should have menu items horizontally and collapse on mobile devices into a responsive menu. As an example of the layout and resize behaviour, view the font awesome website in your browser to view the menu collapse effect.
